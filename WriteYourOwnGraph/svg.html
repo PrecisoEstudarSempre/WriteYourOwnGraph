@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Grafos</title>
+	<meta charset="utf-8"/>
+	<script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/panel.css"></link>
+	<link rel="stylesheet" type="text/css" href="css/tools.css"></link>
+</head>
+<body>
+	<div id="idPanelTools">
+		<div class="tool">
+			<img id="idDot" src="images/dot.png" />			
+		</div>
+		<div class="tool">
+			<img id="idEdge" src="images/line_chart.png" />
+		</div>
+	</div>
+	
+	<div id="idPanelDashboard">
+		<svg id="idDashboard">			
+	  		<!-- <circle id="pointA" cx="15" cy="15" r="5" stroke="black" stroke-width="4" fill="black" />
+	  		<circle id="pointB" cx="250" cy="250" r="5" stroke="black" stroke-width="4" fill="black" />	  		
+
+	  		<path id="pathAB" d="M15,15 L250,250" stroke="red" stroke-width="3"/>
+	  		<path id="recursive" d="M100,200 C100,100 250,100 110,200" stroke="red" stroke-width="3" fill="none" /> -->	  		
+		</svg>	
+	</div>
+	
+	<div id="idPanelLayers">
+		<div style="overflow: scroll; width: inherit; height: inherit;     overflow: scroll;">
+			<div style="border: 1px solid black;height: 50px;     margin-top: 5px;
+    margin-left: 5px;
+    margin-bottom: 5px;">
+				teste
+			</div>	
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+	var axisX=0, axisY=0;
+	var $dashboard = $('#idDashboard');
+	var leftPositionDashboard = $dashboard.position().left;
+	var topPositionDashboard = $dashboard.position().top;
+	var flagAction = '';
+	var $dot;
+	var pickedDots = new Array();
+
+	$(document).ready(function() {
+		$dashboard.mousemove(function(event) {
+			axisX=event.pageX;
+			axisY=event.pageY;			
+
+			if(flagAction=='drawDot'){				
+				$dot.attr('cx',axisX-leftPositionDashboard);
+				$dot.attr('cy',axisY-topPositionDashboard);
+			}
+		});
+
+		$dashboard.click(function(event) {
+			if(flagAction=='drawDot'){
+				$dashboard.append($dot);
+				flagAction='';
+			}
+		});
+
+		$('#idDot').click(function() {
+			drawDot(axisX,axisY);
+		});
+
+		$('#idEdge').click(function(){
+			drawEdgeValidation();
+		});
+	});
+
+	function drawDot(axisX,axisY){		
+		$dot = $(document.createElementNS("http://www.w3.org/2000/svg", 'circle'));
+		$dot.attr('r', 5)
+			.attr('stroke','black')
+			.attr('stroke-width','2')
+			.attr('fill','black');
+		$dot.on('click',function(){
+			pickAndUnpickDot($(this));
+		});
+		flagAction = 'drawDot';
+	}
+
+	function pickAndUnpickDot($dot) {
+		if($dot.attr('stroke')=='red'){
+			$dot.attr('stroke','black');
+			pickedDots.pop($dot);
+		} else{
+			$dot.attr('stroke','red');
+			pickedDots.push($dot);
+		}
+	}
+
+	function drawEdgeValidation() {
+		var arrayLength = pickedDots.length;
+		if(arrayLength == 0){
+			alert("Sem nós para projeção de aresta.");
+		} else if(arrayLength == 1){
+			if(confirm("Utilização de nó recursivo ?")){
+				drawRecursiveEdge(pickedDots[0], pickedDots[0]);
+			}
+		} else if(arrayLength > 2){
+			alert("Mais de 2 nós para projeção de aresta.");
+		} else {
+			drawStraightEdge(pickedDots[0],pickedDots[1]);
+		}
+	}
+
+	function drawStraightEdge($dotBegin, $dotEnd) {
+		var d = 'M'+$dotBegin.attr('cx')+','+$dotBegin.attr('cy')+' L'+$dotEnd.attr('cx')+','+$dotEnd.attr('cy');
+		$edge = $(document.createElementNS("http://www.w3.org/2000/svg", 'path'));
+		$edge.attr('stroke-width','3')
+				.attr('stroke','black')
+				.attr('d',d);
+		$dashboard.append($edge);
+		pickAndUnpickDot($dotBegin);
+		pickAndUnpickDot($dotEnd);
+	}
+
+	function drawRecursiveEdge($dotBegin, $dotEnd) {
+		
+	}
+</script>
+</html>

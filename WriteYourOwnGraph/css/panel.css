@@ -1,0 +1,25 @@
+#idDashboard{
+	border: 1px solid black;
+	width: 500px;
+	height: 500px;
+}
+
+#idPanelDashboard{
+	display: inline-block; 
+	margin-left: 6px;
+}
+
+#idPanelTools{
+	height: 500px;
+	display: inline-block; 
+	border: 1px solid black; 
+	width: 30px; 
+	height: 500px;
+}
+
+#idPanelLayers{
+	display: inline-block; 
+	border: 1px solid black;
+	width: 300px;
+	height: 200px;
+}
