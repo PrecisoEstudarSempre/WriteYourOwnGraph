@@ -28,13 +28,7 @@
 	</div>
 	
 	<div id="idPanelLayers">
-		<div style="overflow: scroll; width: inherit; height: inherit;     overflow: scroll;">
-			<div style="border: 1px solid black;height: 50px;     margin-top: 5px;
-    margin-left: 5px;
-    margin-bottom: 5px;">
-				teste
-			</div>	
-		</div>
+		<div id="idLayers"></div>
 	</div>
 </body>
 <script type="text/javascript">
@@ -45,6 +39,9 @@
 	var flagAction = '';
 	var $dot;
 	var pickedDots = new Array();
+	var $divLayers = $('#idLayers');
+	var MSG_DOT_CREATION = "Criação de nó";
+	var MSG_EDGE_CREATION = "Criação de aresta";
 
 	$(document).ready(function() {
 		$dashboard.mousemove(function(event) {
@@ -60,6 +57,7 @@
 		$dashboard.click(function(event) {
 			if(flagAction=='drawDot'){
 				$dashboard.append($dot);
+				createLayer(MSG_DOT_CREATION, "ddd");
 				flagAction='';
 			}
 		});
@@ -82,7 +80,7 @@
 		$dot.on('click',function(){
 			pickAndUnpickDot($(this));
 		});
-		flagAction = 'drawDot';
+		flagAction = 'drawDot';		
 	}
 
 	function pickAndUnpickDot($dot) {
@@ -112,17 +110,32 @@
 
 	function drawStraightEdge($dotBegin, $dotEnd) {
 		var d = 'M'+$dotBegin.attr('cx')+','+$dotBegin.attr('cy')+' L'+$dotEnd.attr('cx')+','+$dotEnd.attr('cy');
-		$edge = $(document.createElementNS("http://www.w3.org/2000/svg", 'path'));
+		var $edge = $(document.createElementNS("http://www.w3.org/2000/svg", 'path'));
 		$edge.attr('stroke-width','3')
 				.attr('stroke','black')
 				.attr('d',d);
 		$dashboard.append($edge);
 		pickAndUnpickDot($dotBegin);
 		pickAndUnpickDot($dotEnd);
+		createLayer(MSG_EDGE_CREATION,'ddd');
 	}
 
 	function drawRecursiveEdge($dotBegin, $dotEnd) {
 		
+	}
+
+	function createLayer(msg, idElement){
+		var $layer = $('<div>');
+		var $span = $('<span>');
+		
+		$span.addClass('spanLayer');
+		$span.html(msg);
+		
+		$layer.addClass('layer');
+		$layer.append($span);
+		
+		$divLayers.append($layer);
+		$divLayers.prop('scrollTop', $divLayers.prop('scrollHeight'));
 	}
 </script>
 </html>
