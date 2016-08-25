@@ -126,16 +126,30 @@
 
 	function createLayer(msg, idElement){
 		var $layer = $('<div>');
-		var $span = $('<span>');
+		var $spanDescription = $('<span>');
+		var $spanTrash = $('<span>');
+		var $imgTrash = $("<img src='images/trash.png' title='Excluir' class='imgTrashLayer' />");
 		
-		$span.addClass('spanLayer');
-		$span.html(msg);
+		$spanDescription.addClass('spanDescriptionLayer');
+		$spanDescription.html(msg);
+		$spanDescription.click(function(idElement){
+			pickAndUnpickDot($('#'+idElement));
+		});
+
+		$spanTrash.addClass('spanTrashLayer');
+		$spanTrash.append($imgTrash);
 		
 		$layer.addClass('layer');
-		$layer.append($span);
+		$layer.append($spanDescription);
+		$layer.append($spanTrash);
 		
 		$divLayers.append($layer);
 		$divLayers.prop('scrollTop', $divLayers.prop('scrollHeight'));
-	}
+
+		$imgTrash.click(function(idElement){
+			alert("fff");
+			$('#'+idElement).remove();
+		});
+	} 
 </script>
 </html>
