@@ -28,7 +28,18 @@
 	overflow-x: hidden;
 	overflow-y: scroll;
 	width: inherit; 
-	height: inherit;
+	height: 180px;
+	background-color: #C0C0C0;
+}
+
+.titleBar{	
+	height: 20px;
+	width: inherit;
+	background-color: #0000AC;
+	font-family: Helvetica Neue,Helvetica,Arial Unicode MS,Arial;
+    font-size: 12px;
+    font-weight: bold;
+    color: white;
 }
 
 .layer{
