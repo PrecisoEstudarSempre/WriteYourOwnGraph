@@ -57,7 +57,7 @@
 		$dashboard.click(function(event) {
 			if(flagAction=='drawDot'){
 				$dashboard.append($dot);
-				createLayer(MSG_DOT_CREATION, "ddd");
+				createLayer(MSG_DOT_CREATION, $dot);
 				flagAction='';
 			}
 		});
@@ -117,14 +117,14 @@
 		$dashboard.append($edge);
 		pickAndUnpickDot($dotBegin);
 		pickAndUnpickDot($dotEnd);
-		createLayer(MSG_EDGE_CREATION,'ddd');
+		createLayer(MSG_EDGE_CREATION,$edge);
 	}
 
 	function drawRecursiveEdge($dotBegin, $dotEnd) {
 		
 	}
 
-	function createLayer(msg, idElement){
+	function createLayer(msg, $element){
 		var $layer = $('<div>');
 		var $spanDescription = $('<span>');
 		var $spanTrash = $('<span>');
@@ -146,10 +146,14 @@
 		$divLayers.append($layer);
 		$divLayers.prop('scrollTop', $divLayers.prop('scrollHeight'));
 
-		$imgTrash.click(function(idElement){
-			alert("fff");
-			$('#'+idElement).remove();
+		$imgTrash.click(function(){			
+			removeLayerAndElement($(this).parent().parent(),$element);		
 		});
+	}
+
+	function removeLayerAndElement($layer, $element){
+		$layer.remove();
+		$element.remove();
 	} 
 </script>
 </html>
