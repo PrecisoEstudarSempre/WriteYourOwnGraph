@@ -34,12 +34,17 @@
 
 .titleBar{	
 	height: 20px;
-	width: inherit;
+	width: 300px;
 	background-color: #0000AC;
-	font-family: Helvetica Neue,Helvetica,Arial Unicode MS,Arial;
+	font-family: Segoe UI;
     font-size: 12px;
     font-weight: bold;
     color: white;
+    box-sizing: border-box;
+    padding-left: 5px;
+    padding-top: 1px;
+    border: 1px solid white;
+    display: table;
 }
 
 .layer{
@@ -48,7 +53,8 @@
 	margin-top: 5px; 
 	margin-left: 5px; 
 	margin-right: 5px; 
-	margin-bottom: 5px;	
+	margin-bottom: 5px;
+	background-color: #e6e6e6;	
 }
 
 .spanDescriptionLayer{
@@ -59,6 +65,9 @@
 	padding-left: 5px;
 	text-decoration: underline;
 	cursor: pointer;
+	font-family: Segoe UI;
+    font-size: 12px;
+    font-weight: bold;
 }
 
 .spanTrashLayer{
@@ -72,4 +81,16 @@
 	height: 20px; 
 	width: 20px;
 	cursor: pointer;
+}
+
+#titleBarLabel{
+	display: table-cell;
+	width: 90%;
+}
+
+.titleBarOptions{
+	display: table-cell;
+	width: 5%;
+    text-align: center;
+    cursor: pointer;
 }
