@@ -1,12 +1,14 @@
 #idDashboard{
 	border: 1px solid black;
-	width: 500px;
-	height: 500px;
+	width: inherit;
+	height: inherit;
 }
 
 #idPanelDashboard{
 	display: inline-block; 
 	margin-left: 6px;
+	width: 500px;
+	height: 500px;
 }
 
 #idPanelTools{
@@ -34,7 +36,7 @@
 
 .titleBar{	
 	height: 20px;
-	width: 300px;
+	width: inherit;
 	background-color: #0000AC;
 	font-family: Segoe UI;
     font-size: 12px;
@@ -83,9 +85,9 @@
 	cursor: pointer;
 }
 
-#titleBarLabel{
+#idTitleBarLabel{
 	display: table-cell;
-	width: 90%;
+	width: 85%;
 }
 
 .titleBarOptions{
