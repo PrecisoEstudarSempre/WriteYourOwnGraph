@@ -4,21 +4,34 @@
 	<title>Grafos</title>
 	<meta charset="utf-8"/>
 	<script type="text/javascript" src="js/jquery-3.1.0.js"></script>
-	<script type="text/javascript" src="js/basicoperations.js"></script>
+	<script type="text/javascript" src="js/minimizeMaximize.js"></script>
 	<link rel="stylesheet" type="text/css" href="css/panel.css"></link>
 	<link rel="stylesheet" type="text/css" href="css/tools.css"></link>
 </head>
 <body>
-	<div id="idPanelTools">
-		<div class="tool">
-			<img id="idDot" src="images/dot.png" />			
-		</div>
-		<div class="tool">
-			<img id="idEdge" src="images/line_chart.png" />
+	<div id="idPanelTools">		
+		<div id="idPanelToolsInner">
+			<div id="idTitleBarTools">
+				<div id="idTitleBarLabelTools">Ferramentas</div>
+			</div>
+			<div id="idTools">		
+				<div class="tool">
+					<img id="idDot" src="images/dot.png" />			
+				</div>
+				<div class="tool">
+					<img id="idEdge" src="images/line_chart.png" />
+				</div>
+			</div>	
 		</div>
 	</div>
 	
 	<div id="idPanelDashboard">
+		<div class="titleBar">
+			<div class="titleBarLabel">Área de Trabalho</div>
+			<div id="idTitleBarDashboardOptionMinimize" class="titleBarOptions">_</div>
+			<div id="idTitleBarDashboardOptionMaximize" class="titleBarOptions">□</div>
+			<div class="titleBarOptions">X</div>
+		</div>
 		<svg id="idDashboard">			
 	  		<!-- <circle id="pointA" cx="15" cy="15" r="5" stroke="black" stroke-width="4" fill="black" />
 	  		<circle id="pointB" cx="250" cy="250" r="5" stroke="black" stroke-width="4" fill="black" />	  		
@@ -30,8 +43,9 @@
 	
 	<div id="idPanelLayers">
 		<div class="titleBar">
-			<div id="titleBarLabel">Camadas</div>
-			<div class="titleBarOptions titleBarOptionMinimize">_</div>
+			<div class="titleBarLabel">Camadas</div>
+			<div id="idTitleBarLayersOptionMinimize" class="titleBarOptions">_</div>
+			<div id="idTitleBarLayersOptionMaximize" class="titleBarOptions">□</div>
 			<div class="titleBarOptions">X</div>
 		</div>
 		<div id="idLayers"></div>
@@ -138,8 +152,8 @@
 		
 		$spanDescription.addClass('spanDescriptionLayer');
 		$spanDescription.html(msg);
-		$spanDescription.click(function(idElement){
-			pickAndUnpickDot($('#'+idElement));
+		$spanDescription.click(function(){
+			pickAndUnpickDot($element);
 		});
 
 		$spanTrash.addClass('spanTrashLayer');

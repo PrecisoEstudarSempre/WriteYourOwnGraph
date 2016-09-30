@@ -1,8 +1,17 @@
+#idTools{
+	display: table-cell; 
+	width: 30px; 
+	height: inherit; 
+	vertical-align: top;
+}
+
 .tool{
 	border: 1px solid black; 
 	width: 20px; 
 	height: 20px; 
 	margin: 3px 3px 3px 3px;
+	background-color: whitesmoke;
+	cursor: pointer;
 }
 
 #idDot{
@@ -14,4 +23,21 @@
 #idEdge{
 	height: 20px;
 	display: inherit;
+}
+
+#idTitleBarLabelTools{
+	writing-mode: tb-rl;
+	margin-top: 5px;
+}
+
+#idTitleBarTools{
+	display: table-cell;
+	width: 20px;
+	height: inherit;
+	background-color: #0000AC;
+    border: 1px solid white;
+    color: white;
+    font-family: Segoe UI;
+    font-size: 12px;
+    font-weight: bold;
 }

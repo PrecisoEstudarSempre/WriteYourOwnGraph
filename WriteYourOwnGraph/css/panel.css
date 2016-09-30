@@ -1,7 +1,7 @@
-#idDashboard{
-	border: 1px solid black;
+#idDashboard{	
 	width: inherit;
-	height: inherit;
+	height: 480px;
+	background-color: #C0C0C0;
 }
 
 #idPanelDashboard{
@@ -9,14 +9,21 @@
 	margin-left: 6px;
 	width: 500px;
 	height: 500px;
+	border: 1px solid black;
 }
 
 #idPanelTools{
-	height: 500px;
 	display: inline-block; 
 	border: 1px solid black; 
-	width: 30px; 
+	width: 50px; 
 	height: 500px;
+	background-color: #C0C0C0;
+}
+
+#idPanelToolsInner{
+	width: inherit;
+	height: inherit;
+	display: block;
 }
 
 #idPanelLayers{
@@ -85,7 +92,7 @@
 	cursor: pointer;
 }
 
-#idTitleBarLabel{
+.titleBarLabel{
 	display: table-cell;
 	width: 85%;
 }
