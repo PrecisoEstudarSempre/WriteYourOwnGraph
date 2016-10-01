@@ -7,7 +7,7 @@ Caso você queira estudar o código-fonte, segue organização do projeto.
 
 WriteYourOwnGraph
 
-css - Pasta que contém todos os arquivos de estilização.<br/>
-js - Pasta que contém todos os arquivos JavaScript.
-images - Pasta que contém todas as imagens.
-graph.html - Arquivo html que inicia a ferramenta.
+<blockquote>|_css - Pasta que contém todos os arquivos de estilização.</blockquote><br/>
+<blockquote>|_js - Pasta que contém todos os arquivos JavaScript.</blockquote><br/>
+<blockquote>|_images - Pasta que contém todas as imagens.</blockquote><br/>
+<blockquote>|_graph.html - Arquivo html que inicia a ferramenta.</blockquote><br/>
