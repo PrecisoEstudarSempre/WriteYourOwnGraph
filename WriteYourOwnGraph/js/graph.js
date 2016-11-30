@@ -5,8 +5,11 @@ var topPositionDashboard = $dashboard.position().top;
 var flagAction = '';
 var $dot;
 var pickedDots = new Array();
+var createdDots = new Array();
 var $divLayers = $('#idLayers');
 var layerCounter = 0;
+var pickedColor = '#3385ff';
+var unpickedColor = 'black';
 
 $(document).ready(function() {
 	$dashboard.mousemove(function(event) {
@@ -37,24 +40,39 @@ $(document).ready(function() {
 });
 
 function drawDot(axisX,axisY){		
+	var idDot = new Date().getTime();
 	$dot = $(document.createElementNS("http://www.w3.org/2000/svg", 'circle'));
 	$dot.attr('r', 5)
 		.attr('stroke','black')
 		.attr('stroke-width','2')
-		.attr('fill','black');
+		.attr('fill','black')
+		.attr('data-dot-id', idDot);
+	$dot.data('dot-object',{
+		'id': idDot,
+		'title' : ''
+	});
 	$dot.addClass('dot');
 	$dot.on('click',function(){
 		pickAndUnpickDot($(this));
 	});
+
+	/*
+	createdDots.push({
+		'id': idDot,
+		'title' : ''
+	});
+	*/
 	flagAction = 'drawDot';		
 }
 
 function pickAndUnpickDot($dot) {
-	if($dot.attr('stroke')=='red'){
-		$dot.attr('stroke','black');
+	//selecionado
+	if($dot.attr('stroke')==pickedColor){
+		$dot.attr('stroke',unpickedColor);
 		pickedDots.pop($dot);
 	} else{
-		$dot.attr('stroke','red');
+		$dot.attr('stroke',pickedColor);
+		loadDotProperties($dot.data('dot-object'));
 		pickedDots.push($dot);
 	}
 }
@@ -101,7 +119,7 @@ function createLayer(msg, $element){
 	var $layer = $('<div>');
 	var $spanDescription = $('<span>');
 	var $spanTrash = $('<span>');
-	var $imgTrash = $("<img src='images/trash.png' title='Excluir' class='imgTrashLayer' />");
+	var $imgTrash = $("<img src='../images/trash.png' title='Excluir' class='imgTrashLayer' />");
 	
 	msg = ++layerCounter + '. ' + msg;
 
@@ -129,4 +147,13 @@ function createLayer(msg, $element){
 function removeLayerAndElement($layer, $element){
 	$layer.remove();
 	$element.remove();
+}
+
+function loadDotProperties(dotProperties){
+	$.get('dot-properties.html', function(data,textStatus){
+		if(textStatus=='success'){
+			$("#idProperty").html(data);
+			$('#idDotTitle').val(dotProperties.title);
+		}
+	});	
 }

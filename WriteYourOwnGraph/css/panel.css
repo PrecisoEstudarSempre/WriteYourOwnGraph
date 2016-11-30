@@ -103,3 +103,15 @@
     text-align: center;
     cursor: pointer;
 }
+
+#idPanelProperty{
+	height: 300px; 
+	width: 300px;
+	border: 1px solid black;
+}
+
+#idProperty{
+	height: inherit; 
+	width: inherit;
+	background-color: #C0C0C0;
+}

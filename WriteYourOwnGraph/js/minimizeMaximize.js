@@ -42,4 +42,26 @@ $(document).ready(function(){
 			});
 		}
 	);
+
+	$('#idTitleBarPropertyOptionMinimize').click(
+		function(){
+			$('#idProperty').animate({
+				height: "0px"
+			});
+			$('#idPanelProperty').animate({
+				height: "20px"
+			});
+		}
+	);
+
+	$('#idTitleBarPropertyOptionMaximize').click(
+		function(){
+			$('#idProperty').animate({
+				height: "280px"
+			});
+			$('#idPanelProperty').animate({
+				height: "300px"
+			});
+		}
+	);
 });
