@@ -3,7 +3,9 @@ var $dashboard = $('#idDashboard');
 var leftPositionDashboard = $dashboard.position().left;
 var topPositionDashboard = $dashboard.position().top;
 var flagAction = '';
-var $dot;
+var $createdDot;
+var $parentCreatedDot;
+var $currentPickedDot;
 var pickedDots = new Array();
 var createdDots = new Array();
 var $divLayers = $('#idLayers');
@@ -17,15 +19,15 @@ $(document).ready(function() {
 		axisY=event.pageY;			
 
 		if(flagAction=='drawDot'){				
-			$dot.attr('cx',axisX-leftPositionDashboard);
-			$dot.attr('cy',axisY-topPositionDashboard);
+			$createdDot.attr('cx',axisX-leftPositionDashboard);
+			$createdDot.attr('cy',axisY-topPositionDashboard);
 		}
 	});
 
 	$dashboard.click(function(event) {
 		if(flagAction=='drawDot'){
-			$dashboard.append($dot);
-			createLayer(MSG_DOT_CREATION, $dot);
+			$dashboard.append($parentCreatedDot);			
+			createLayer(MSG_DOT_CREATION, $createdDot);
 			flagAction='';
 		}
 	});
@@ -41,28 +43,25 @@ $(document).ready(function() {
 
 function drawDot(axisX,axisY){		
 	var idDot = new Date().getTime();
-	$dot = $(document.createElementNS("http://www.w3.org/2000/svg", 'circle'));
-	$dot.attr('r', 5)
+	
+	$parentCreatedDot = $(document.createElementNS("http://www.w3.org/2000/svg", 'g'));
+	$createdDot = $(document.createElementNS("http://www.w3.org/2000/svg", 'circle'));
+	$createdDot.attr('r', 5)
 		.attr('stroke','black')
 		.attr('stroke-width','2')
 		.attr('fill','black')
 		.attr('data-dot-id', idDot);
-	$dot.data('dot-object',{
+	$createdDot.data('dot-object',{
 		'id': idDot,
 		'title' : ''
 	});
-	$dot.addClass('dot');
-	$dot.on('click',function(){
+	$createdDot.addClass('dot');
+	$createdDot.on('click',function(){
 		pickAndUnpickDot($(this));
 	});
-
-	/*
-	createdDots.push({
-		'id': idDot,
-		'title' : ''
-	});
-	*/
-	flagAction = 'drawDot';		
+	$parentCreatedDot.append($createdDot);
+	
+	flagAction = 'drawDot';
 }
 
 function pickAndUnpickDot($dot) {
@@ -70,10 +69,12 @@ function pickAndUnpickDot($dot) {
 	if($dot.attr('stroke')==pickedColor){
 		$dot.attr('stroke',unpickedColor);
 		pickedDots.pop($dot);
+		$currentPickedDot = null;
 	} else{
-		$dot.attr('stroke',pickedColor);
-		loadDotProperties($dot.data('dot-object'));
+		$dot.attr('stroke',pickedColor);		
 		pickedDots.push($dot);
+		$currentPickedDot = $dot;
+		loadDotProperties();		
 	}
 }
 
@@ -149,11 +150,12 @@ function removeLayerAndElement($layer, $element){
 	$element.remove();
 }
 
-function loadDotProperties(dotProperties){
+function loadDotProperties(){
+	var dotobject = $currentPickedDot.data('dot-object');
 	$.get('dot-properties.html', function(data,textStatus){
 		if(textStatus=='success'){
 			$("#idProperty").html(data);
-			$('#idDotTitle').val(dotProperties.title);
+			$('#idDotTitle').val(dotobject.title);
 		}
 	});	
 }

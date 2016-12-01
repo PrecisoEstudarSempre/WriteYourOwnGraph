@@ -9,16 +9,16 @@
 	width: inherit;
 	height: 50px;
 	display: table;
+    font-family: Segoe UI;
+    font-size: 12px;
+    font-weight: bold;
 }
 
 .dot-property-label{
 	display: table-cell;
     vertical-align: middle;
     height: inherit;
-    padding-left: 5px;
-    font-family: Segoe UI;
-    font-size: 12px;
-    font-weight: bold;
+    padding-left: 5px;    
     width: 20%
 }
 
@@ -27,4 +27,12 @@
     width: 80%;
     height: inherit;
     vertical-align: middle;
+}
+
+#dot-property-title{
+    vertical-align: middle;
+    height: inherit;
+    display: table-cell;
+    text-align: center;
+    text-decoration: underline;
 }
