@@ -3,9 +3,9 @@ var $dashboard = $('#idDashboard');
 var leftPositionDashboard = $dashboard.position().left;
 var topPositionDashboard = $dashboard.position().top;
 var flagAction = '';
-var $createdDot;
-var $parentCreatedDot;
-var $currentPickedDot;
+var $createdDot = null;
+var $parentCreatedDot = null;
+var $currentPickedDot = null;
 var pickedDots = new Array();
 var createdDots = new Array();
 var $divLayers = $('#idLayers');
@@ -30,6 +30,7 @@ $(document).ready(function() {
 			createLayer(MSG_DOT_CREATION, $createdDot);
 			flagAction='';
 		}
+		unloadProperties();
 	});
 
 	$('#idDot').click(function() {
@@ -70,11 +71,21 @@ function pickAndUnpickDot($dot) {
 		$dot.attr('stroke',unpickedColor);
 		pickedDots.pop($dot);
 		$currentPickedDot = null;
+		unloadProperties();
 	} else{
-		$dot.attr('stroke',pickedColor);		
+		$dot.attr('stroke',pickedColor);
 		pickedDots.push($dot);
 		$currentPickedDot = $dot;
 		loadDotProperties();		
+	}
+}
+
+function pickAndUnpickEdge($edge) {
+	if($edge.attr('stroke')==pickedColor){
+		$edge.attr('stroke',unpickedColor);
+	} else {
+		$edge.attr('stroke',pickedColor);
+		loadEdgeProperties();
 	}
 }
 
@@ -99,12 +110,19 @@ function drawEdgeValidation() {
 }
 
 function drawStraightEdge($dotBegin, $dotEnd) {
-	var d = 'M'+$dotBegin.attr('cx')+','+$dotBegin.attr('cy')+' L'+$dotEnd.attr('cx')+','+$dotEnd.attr('cy');
+	var newMX = new Number($dotBegin.attr('cx'))-5;
+	var newMY = new Number($dotBegin.attr('cy'))-2;
+	var newLX = new Number($dotEnd.attr('cx'))+5;
+	var newLY = new Number($dotEnd.attr('cy'))+2;
+	var d = 'M'+newMX+','+newMY+' L'+newLX+','+newLY;
 	var $edge = $(document.createElementNS("http://www.w3.org/2000/svg", 'path'));
 	$edge.attr('stroke-width','3')
 			.attr('stroke','black')
 			.attr('d',d);
 	$edge.addClass('edge');
+	$edge.on('click',function(){
+		pickAndUnpickEdge($(this));
+	});
 	$dashboard.append($edge);
 	pickAndUnpickDot($dotBegin);
 	pickAndUnpickDot($dotEnd);
@@ -155,7 +173,20 @@ function loadDotProperties(){
 	$.get('dot-properties.html', function(data,textStatus){
 		if(textStatus=='success'){
 			$("#idProperty").html(data);
-			$('#idDotTitle').val(dotobject.title);
+			$('#id-dot-title').val(dotobject.title);
 		}
-	});	
+	});
+}
+
+function loadEdgeProperties(){
+	$.get('edge-properties.html', function(data,textStatus){
+		if(textStatus=='success'){
+			$("#idProperty").html(data);
+			//$('#id-edge-arc').val(dotobject.title);
+		}
+	});
+}
+
+function unloadProperties() {
+	$("#idProperty").empty();
 }

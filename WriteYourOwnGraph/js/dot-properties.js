@@ -1,6 +1,6 @@
 $(document).ready(function(){
-	$('#idDotTitle').keyup(
-		function() {
+	$('#id-dot-title').keyup(
+		function() {			
 			reloadDotTitle($currentPickedDot, $(this).val());
 		}
 	);
@@ -12,9 +12,9 @@ function reloadDotTitle($dot,title){
 	var $parent = $dot.parent();
 	var $svgText;
 	
-	if($dot.next().is('text')){
+	if($dot.next().is('text')){		
 		$svgText = $dot.next();
-	} else {
+	} else {		
 		$svgText = $(document.createElementNS("http://www.w3.org/2000/svg", 'text'));
 	}
 	
