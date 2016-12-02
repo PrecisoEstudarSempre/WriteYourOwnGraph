@@ -6,6 +6,7 @@ var flagAction = '';
 var $createdDot = null;
 var $parentCreatedDot = null;
 var $currentPickedDot = null;
+var $currentPickedEdge = null;
 var pickedDots = new Array();
 var createdDots = new Array();
 var $divLayers = $('#idLayers');
@@ -85,6 +86,7 @@ function pickAndUnpickEdge($edge) {
 		$edge.attr('stroke',unpickedColor);
 	} else {
 		$edge.attr('stroke',pickedColor);
+		$currentPickedEdge = $edge;
 		loadEdgeProperties();
 	}
 }
@@ -110,15 +112,21 @@ function drawEdgeValidation() {
 }
 
 function drawStraightEdge($dotBegin, $dotEnd) {
-	var newMX = new Number($dotBegin.attr('cx'))-5;
-	var newMY = new Number($dotBegin.attr('cy'))-2;
-	var newLX = new Number($dotEnd.attr('cx'))+5;
-	var newLY = new Number($dotEnd.attr('cy'))+2;
+	var idEdge = new Date().getTime();
+	var newMX = new Number($dotBegin.attr('cx'));
+	var newMY = new Number($dotBegin.attr('cy'));
+	var newLX = new Number($dotEnd.attr('cx'));
+	var newLY = new Number($dotEnd.attr('cy'));
+
 	var d = 'M'+newMX+','+newMY+' L'+newLX+','+newLY;
 	var $edge = $(document.createElementNS("http://www.w3.org/2000/svg", 'path'));
 	$edge.attr('stroke-width','3')
 			.attr('stroke','black')
 			.attr('d',d);
+	$edge.data('edge-object',{
+		'id' : idEdge,
+		'isCurve' : false
+	});
 	$edge.addClass('edge');
 	$edge.on('click',function(){
 		pickAndUnpickEdge($(this));
@@ -169,20 +177,21 @@ function removeLayerAndElement($layer, $element){
 }
 
 function loadDotProperties(){
-	var dotobject = $currentPickedDot.data('dot-object');
+	var dotObject = $currentPickedDot.data('dot-object');
 	$.get('dot-properties.html', function(data,textStatus){
 		if(textStatus=='success'){
 			$("#idProperty").html(data);
-			$('#id-dot-title').val(dotobject.title);
+			$('#id-dot-title').val(dotObject.title);
 		}
 	});
 }
 
 function loadEdgeProperties(){
+	var edgeObject = $currentPickedEdge.data('edge-object');
 	$.get('edge-properties.html', function(data,textStatus){
 		if(textStatus=='success'){
-			$("#idProperty").html(data);
-			//$('#id-edge-arc').val(dotobject.title);
+			$('#idProperty').html(data);			
+			$('#id-edge-arc').attr('check',edgeObject.isCurve);
 		}
 	});
 }
