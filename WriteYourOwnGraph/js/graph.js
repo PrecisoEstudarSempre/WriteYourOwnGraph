@@ -1,16 +1,23 @@
-var axisX=0, axisY=0;
 var $dashboard = $('#idDashboard');
+var $divLayers = $('#idLayers');
+
+var axisX=0, axisY=0;
+var layerCounter = 0;
 var leftPositionDashboard = $dashboard.position().left;
 var topPositionDashboard = $dashboard.position().top;
+
 var flagAction = '';
+var isPressed = false;
+
 var $createdDot = null;
 var $parentCreatedDot = null;
 var $currentPickedDot = null;
 var $currentPickedEdge = null;
+var $currentControlPoint = null;
+
 var pickedDots = new Array();
 var createdDots = new Array();
-var $divLayers = $('#idLayers');
-var layerCounter = 0;
+
 var pickedColor = '#3385ff';
 var unpickedColor = 'black';
 
@@ -19,7 +26,7 @@ $(document).ready(function() {
 		axisX=event.pageX;
 		axisY=event.pageY;			
 
-		if(flagAction=='drawDot'){				
+		if(flagAction=='drawDot'){
 			$createdDot.attr('cx',axisX-leftPositionDashboard);
 			$createdDot.attr('cy',axisY-topPositionDashboard);
 		}
@@ -31,10 +38,31 @@ $(document).ready(function() {
 			createLayer(MSG_DOT_CREATION, $createdDot);
 			flagAction='';
 		}
-		unloadProperties();
+		//unloadProperties();
 	});
 
-	$('#idDot').click(function() {
+	$dashboard.mousedown(
+		function(){
+			if(flagAction == 'drawArc'){
+				isPressed = true;				
+				$(this).mousemove(
+					function (event) {
+						moveControlPoint(event);
+					}
+				);
+			}
+		}
+	);
+
+	$dashboard.mouseup(
+		function(){
+			if(flagAction == 'drawArc'){
+				isPressed = false;
+			}
+		}
+	);
+
+	$('.drawDot').click(function() {
 		drawDot(axisX,axisY);
 	});
 
@@ -122,10 +150,17 @@ function drawStraightEdge($dotBegin, $dotEnd) {
 	var $edge = $(document.createElementNS("http://www.w3.org/2000/svg", 'path'));
 	$edge.attr('stroke-width','3')
 			.attr('stroke','black')
-			.attr('d',d);
+			.attr('d',d)
+			.attr('fill','none');
 	$edge.data('edge-object',{
 		'id' : idEdge,
-		'isCurve' : false
+		'isCurve' : false,
+		'mx' : newMX,
+		'my' : newMY,
+		'lx' : newLX,
+		'ly' : newLY,
+		'qx' : 0,
+		'qy' : 0
 	});
 	$edge.addClass('edge');
 	$edge.on('click',function(){
@@ -190,8 +225,8 @@ function loadEdgeProperties(){
 	var edgeObject = $currentPickedEdge.data('edge-object');
 	$.get('edge-properties.html', function(data,textStatus){
 		if(textStatus=='success'){
-			$('#idProperty').html(data);			
-			$('#id-edge-arc').attr('check',edgeObject.isCurve);
+			$('#idProperty').html(data);
+			$('#id-edge-arc').attr('checked',edgeObject.isCurve);
 		}
 	});
 }
