@@ -8,6 +8,7 @@ var topPositionDashboard = $dashboard.position().top;
 
 var flagAction = '';
 var isPressed = false;
+var isAdjustingArc = false;
 
 var $createdDot = null;
 var $parentCreatedDot = null;
@@ -38,7 +39,7 @@ $(document).ready(function() {
 			createLayer(MSG_DOT_CREATION, $createdDot);
 			flagAction='';
 		}
-		//unloadProperties();
+		unloadProperties();
 	});
 
 	$dashboard.mousedown(
@@ -58,6 +59,7 @@ $(document).ready(function() {
 		function(){
 			if(flagAction == 'drawArc'){
 				isPressed = false;
+				flagAction = '';
 			}
 		}
 	);
@@ -102,12 +104,28 @@ function pickAndUnpickDot($dot) {
 }
 
 function pickAndUnpickEdge($edge) {
-	if($edge.attr('stroke')==pickedColor){
-		$edge.attr('stroke',unpickedColor);
+	if($edge.data('edge-object').isFocused){
+		unpickEdge($edge)
 	} else {
-		$edge.attr('stroke',pickedColor);
-		$currentPickedEdge = $edge;
+		pickEdge($edge);
 		loadEdgeProperties();
+	}
+}
+
+function pickEdge($edge) {
+	$edge.data('edge-object').isFocused = true;
+	$edge.attr('stroke',pickedColor);
+	$currentPickedEdge = $edge;
+	if($edge.data('edge-object').controlPoint){
+		$edge.data('edge-object').controlPoint.show();
+	}
+}
+
+function unpickEdge($edge) {
+	$edge.data('edge-object').isFocused = false;		
+	$edge.attr('stroke',unpickedColor);
+	if($edge.data('edge-object').controlPoint){
+		$edge.data('edge-object').controlPoint.hide();
 	}
 }
 
@@ -152,16 +170,29 @@ function drawStraightEdge($dotBegin, $dotEnd) {
 		'lx' : newLX,
 		'ly' : newLY,
 		'qx' : 0,
-		'qy' : 0
+		'qy' : 0,
+		'isFocused' : false,
+		'controlPoint' : null
 	});
 	$edge.addClass('edge');
 	$edge.on('click',function(){
+		validateFocusOnCurrentEdge($(this));
 		pickAndUnpickEdge($(this));
 	});
 	$dashboard.append($edge);
 	pickAndUnpickDot($dotBegin);
 	pickAndUnpickDot($dotEnd);
 	createLayer(MSG_EDGE_CREATION,$edge);
+}
+
+function validateFocusOnCurrentEdge($edge) {	
+	if($currentPickedEdge){
+		var edgeObject = $edge.data('edge-object');
+		var currentPickedEdgeObject = $currentPickedEdge.data('edge-object');
+		if(edgeObject.id!=currentPickedEdgeObject.id){
+			unpickEdge($currentPickedEdge);
+		}
+	}
 }
 
 //criação da aresta recursiva deixada para uma próxima versão
@@ -200,6 +231,12 @@ function createLayer(msg, $element){
 
 function removeLayerAndElement($layer, $element){
 	$layer.remove();
+	layerCounter=0;
+	if($element.data('edge-object')){
+		if($element.data('edge-object').controlPoint){
+			$element.data('edge-object').controlPoint.remove();
+		}
+	}
 	$element.remove();
 }
 

@@ -5,6 +5,7 @@ $(document).ready(function(){
 
 	$('#idEdge').click(function(){
 		drawEdgeValidation();
+		unloadProperties();
 	});
 
 	$('#id-icon-new').click(function(){
@@ -13,11 +14,16 @@ $(document).ready(function(){
 });
 
 function resetDashboard() {
-	$dashboard.children().each(function (index,element) {
-		element.remove();
-	});
-	$divLayers.children().each(function (index,element) {
-		element.remove();
-	});
+	unloadProperties();
+	$dashboard.empty();
+	$divLayers.empty();
 	layerCounter = 0;
+	flagAction = '';
+	isPressed = false;
+	isAdjustingArc = false;
+	$createdDot = null;
+	$parentCreatedDot = null;
+	$currentPickedDot = null;
+	$currentPickedEdge = null;
+	$currentControlPoint = null;
 }

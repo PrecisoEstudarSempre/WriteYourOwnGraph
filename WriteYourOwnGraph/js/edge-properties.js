@@ -21,21 +21,22 @@ $(document).ready(function(){
 						.attr('cx',newX)
 						.attr('cy',newY);
 				edgeObject.qx = newX;
-				edgeObject.qy = newY;
-				console.log($currentPickedEdge.data('edge-object'));
+				edgeObject.qy = newY;				
 				
 				$controlPoint.addClass('dot');
 				$controlPoint.css('cursor','move');
 
-				$controlPoint.mousedown(function(){				
-					flagAction = 'drawArc';	
-				});
-			
-				$dashboard.append($controlPoint);
+				$controlPoint
+					.mousedown(function(){				
+						flagAction = 'drawArc';						
+					});
+				edgeObject.controlPoint=$controlPoint;
+				$dashboard.append(edgeObject.controlPoint);
 				$currentControlPoint = $controlPoint;				
 			} else {
 				$currentControlPoint.remove();
-				$currentControlPoint = null;				
+				$currentControlPoint = null;
+				//tornar a linha novamente reta				
 			}
 		}
 	);
@@ -45,10 +46,11 @@ function moveControlPoint(event) {
 	if(flagAction == 'drawArc'){
 		if(isPressed){		
 			var edgeObject = $currentPickedEdge.data('edge-object');
+			var controlPoint = edgeObject.controlPoint;
 			var qx = axisX-leftPositionDashboard;
 			var qy = axisY-topPositionDashboard;
-			$currentControlPoint.attr('cx',qx);
-			$currentControlPoint.attr('cy',qy);
+			controlPoint.attr('cx',qx);
+			controlPoint.attr('cy',qy);
 			edgeObject.qx = qx;
 			edgeObject.qy = qy;
 			
@@ -56,4 +58,17 @@ function moveControlPoint(event) {
 			$currentPickedEdge.attr('d',newD);
 		}
 	}
+}
+
+function isMouseOverControlPoint() {	
+	var cx = new Number($currentControlPoint.attr('cx'));
+	console.log('x:'+axisX+'/y:'+axisY);
+	var cy = new Number($currentControlPoint.attr('cy'));
+	var xBegin = cx-5;	
+	var xEnd = cx+5;
+	var yBegin = cy-5;
+	var yEnd = cy+5;
+	var isMouseBetweenXAxis = axisX>=xBegin && axisX<=xEnd;
+	var isMouseBetweenYAxis = axisY>=yBegin && axisY<=yEnd;
+	return isMouseBetweenXAxis && isMouseBetweenYAxis;
 }
