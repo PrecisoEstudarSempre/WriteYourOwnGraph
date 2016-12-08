@@ -61,14 +61,6 @@ $(document).ready(function() {
 			}
 		}
 	);
-
-	$('.drawDot').click(function() {
-		drawDot(axisX,axisY);
-	});
-
-	$('#idEdge').click(function(){
-		drawEdgeValidation();
-	});
 });
 
 function drawDot(axisX,axisY){		

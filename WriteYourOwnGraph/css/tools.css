@@ -14,13 +14,11 @@
 	cursor: pointer;
 }
 
-#idDot{
-	height: 20px;
-	padding-left: 5px;
-	display: inherit;
+#idDot{	
+	padding-left: 5px;	
 }
 
-#idEdge{
+.tool-icon{
 	height: 20px;
 	display: inherit;
 }
