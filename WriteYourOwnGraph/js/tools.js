@@ -26,4 +26,6 @@ function resetDashboard() {
 	$currentPickedDot = null;
 	$currentPickedEdge = null;
 	$currentControlPoint = null;
+	pickedDots = new Array();
+	createdDots = new Array();
 }

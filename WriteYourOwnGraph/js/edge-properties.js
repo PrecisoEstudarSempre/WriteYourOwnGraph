@@ -1,8 +1,8 @@
 $(document).ready(function(){
 	$('#id-edge-arc').click(
 		function(){
-			if($(this).is(':checked')){
-				$currentPickedEdge.data('edge-object').isCurve = true;			
+			if($(this).is(':checked')){				
+				$currentPickedEdge.data('edge-object').isCurve = true;
 				var d = $currentPickedEdge.attr('d');
 				var edgeObject = $currentPickedEdge.data('edge-object');
 				var mx = edgeObject.mx;			
@@ -36,7 +36,7 @@ $(document).ready(function(){
 			} else {
 				$currentControlPoint.remove();
 				$currentControlPoint = null;
-				//tornar a linha novamente reta				
+				redrawStraightEdge();
 			}
 		}
 	);
@@ -58,6 +58,17 @@ function moveControlPoint(event) {
 			$currentPickedEdge.attr('d',newD);
 		}
 	}
+}
+
+function redrawStraightEdge() {
+	var edgeObject = $currentPickedEdge.data('edge-object');
+	edgeObject.isCurve = false;
+	var mx = edgeObject.mx;
+	var my = edgeObject.my;
+	var lx = edgeObject.lx;
+	var ly = edgeObject.ly;
+	var newD = buildStraightDimension(mx,my,lx,ly);
+	$currentPickedEdge.attr('d',newD);
 }
 
 function isMouseOverControlPoint() {	
